@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Warrox - Home</title>
+        <title>Warrox - Shop</title>
         <link rel="stylesheet" href="{% static 'frontend/css/index.css' %}">
     </head>
     <body>
@@ -18,5 +18,14 @@
         </nav>
 
         <h1>Shop</h1>
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <h2>{{ product.name }}</h2>
+                    <p>€ {{ product.price }}</p>
+                    <a href="https://google.com">Bekijk product</a>
+                </div>
+            {% endfor %}
+        </div>
     </body>
 </html>    
