@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% block meta %}{% endblock %}
     <title>{% block title %}My Site{% endblock %}</title>
     
     <link rel="stylesheet" href="{% static 'frontend/css/base.css' %}">
