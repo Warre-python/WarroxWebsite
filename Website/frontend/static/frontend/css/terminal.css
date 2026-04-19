@@ -12,19 +12,26 @@ body {
 main {
     flex: 1;
     display: flex;
+    flex-direction: column; /* Stack title and terminal vertically */
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 
+/* Ensure the title has its own space */
+h1 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
 .app {
-    width: 100%;
-    max-width: 800px;
+    width: 95%;         /* Use more screen width */
+    max-width: 1000px;  /* Increased from 800px */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     align-items: center;
-    justify-content: center;
 }
 
 .resize-handle {
@@ -66,13 +73,12 @@ main {
     justify-content: space-between;
     align-items: center;
     background-color: #2d2d2d;
-    width: 80%;
-    height: 30px;
-    padding: 0 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    cursor: grab;
+    width: 100%;        /* Match terminal width */
+    height: 35px;
+    padding: 0 15px;
+    box-sizing: border-box; /* Prevents padding from adding to width */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 
@@ -129,13 +135,14 @@ main {
 
 .terminal {
     background-color: #000000;
-    width: 80%;
-    height: 370px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;        /* Stretch to full app width */
+    height: 600px;      /* Increased from 370px */
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 ::-webkit-scrollbar {

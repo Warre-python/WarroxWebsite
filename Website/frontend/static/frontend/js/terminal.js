@@ -177,7 +177,7 @@ javascript mode = "confirm-tempFunction()"`
 
             },
             etc: {
-                "motd": "Welcome to the terminal! \n\nType 'help' to see all available commands",
+                "motd": "Welcome to the terminal original from Exelvi but reworked by Warrox! \n\nType 'help' to see all available commands",
                 "skel": {
                     ".bash_history": "",
                     ".bashrc": "",
@@ -415,7 +415,7 @@ javascript mode = "confirm-tempFunction()"`
         prompt.textContent = "Are you sure? (y/n)";
         mode = "confirm-" + "resetTerminal()";
         inputElement.value = '';
-    
+        
 
 
     });
