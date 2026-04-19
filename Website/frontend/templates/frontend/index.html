@@ -1,17 +1,236 @@
-<!DOCTYPE html>
 {% extends 'frontend/base.html' %}
 {% load static %}
 
-{% block title %}
-    Home
-{% endblock %}
-
+{% block title %} Home | Warrox.be {% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'frontend/css/index.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h1>Home</h1>
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="fade-in">Welcome to <span class="highlight">Warrox.be</span></h1>
+        <p class="subtitle">Exploring the intersection of Python development and creative design.</p>
+        <div class="cta-buttons">
+            <a href="/shop" class="btn btn-primary">Visit Shop</a>
+            <a href="https://github.com/Warre-python" class="btn btn-secondary">View GitHub</a>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>Innovation</h3>
+        <p>Building modern web solutions with Django and Python.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Open Source</h3>
+        <p>Check out my latest repositories and contributions.</p>
+    </div>
+</section>
+<section class="terminal-section">
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">bash — warrox@be</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+        <div class="output">Warrox OS v2.0. Type 'help' to begin.</div>
+        <div class="input-line">
+            <span class="prompt prompt-current">warrox@be:/$</span>
+            <input type="text" id="terminal-input" autofocus spellcheck="false" autocomplete="off">
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    const input = document.getElementById('terminal-input');
+    const body = document.getElementById('terminal-body');
+    const promptSpan = document.querySelector('.prompt-current');
+
+    // 1. Virtual File System
+    let fileSystem = {
+        'projects': { type: 'dir', content: {
+            'warrox_site.py': { type: 'file', content: 'print("Hello World from Warrox.be")' },
+            'todo.txt': { type: 'file', content: '1. Finish Terminal\n2. Drink Coffee' }
+        }},
+        'readme.md': { type: 'file', content: 'Welcome to the Warrox Shell. Explore using cd and ls.' },
+        'secret_plans': { type: 'dir', content: {
+            'world_domination.txt': { type: 'file', content: 'Step 1: Write more Python.\nStep 2: ???\nStep 3: Profit.' }
+        }}
+    };
+
+    let currentPath = []; // Empty means root /
+
+    // Helper to navigate the VFS
+    function getDir(path) {
+        let dir = fileSystem;
+        for (const p of path) {
+            dir = dir[p].content;
+        }
+        return dir;
+    }
+
+    // Keep focus
+    body.addEventListener('click', () => input.focus());
+
+    const COMMANDS = {
+        // --- NAVIGATION & FILES ---
+        'help': () => 'System: ls, cd [dir], cat [file], mkdir [name], rmdir [name], nano [file], pwd, clear, whoami, hack, disco, date, weather, shop, github',
+        
+        'pwd': () => '/' + currentPath.join('/'),
+
+        'ls': () => {
+            const dir = getDir(currentPath);
+            const items = Object.keys(dir).map(name => {
+                return dir[name].type === 'dir' ? `<span style="color: #4cc9f0;">${name}/</span>` : name;
+            });
+            return items.length ? items.join('&nbsp;&nbsp;') : 'Directory is empty.';
+        },
+
+        'cd': (args) => {
+            if (!args[0] || args[0] === '/') { currentPath = []; return ''; }
+            if (args[0] === '..') { if(currentPath.length > 0) currentPath.pop(); return ''; }
+            
+            const dir = getDir(currentPath);
+            if (dir[args[0]] && dir[args[0]].type === 'dir') {
+                currentPath.push(args[0]);
+                return '';
+            }
+            return `cd: no such directory: ${args[0]}`;
+        },
+
+        'cat': (args) => {
+            const dir = getDir(currentPath);
+            if (!args[0]) return 'cat: missing filename';
+            if (dir[args[0]] && dir[args[0]].type === 'file') {
+                return dir[args[0]].content.replace(/\n/g, '<br>');
+            }
+            return `cat: ${args[0]}: No such file`;
+        },
+
+        'mkdir': (args) => {
+            if (!args[0]) return 'mkdir: missing operand';
+            const dir = getDir(currentPath);
+            dir[args[0]] = { type: 'dir', content: {} };
+            return `Created directory '${args[0]}'`;
+        },
+
+        'rmdir': (args) => {
+            const dir = getDir(currentPath);
+            if (dir[args[0]] && dir[args[0]].type === 'dir') {
+                delete dir[args[0]];
+                return `Removed '${args[0]}'`;
+            }
+            return `rmdir: failed to remove '${args[0]}': No such directory`;
+        },
+
+        'nano': (args) => {
+            if (!args[0]) return 'nano: missing filename';
+            
+            // Check if the user provided content in quotes
+            const content = args[1]; 
+            
+            if (content !== undefined) {
+                const dir = getDir(currentPath);
+                dir[args[0]] = { type: 'file', content: content };
+                return `File '${args[0]}' saved with content: "${content}"`;
+            }
+            
+            return 'Usage: nano filename "your text here"';
+        },
+
+        // --- UTILS & FUN ---
+        'whoami': () => 'warrox_user',
+        'date': () => new Date().toString(),
+        'weather': () => 'Current status: 100% chance of code and coffee.',
+        'about': () => 'Warrox.be - A creative lab for Python, Django, and clean UI design.',
+        
+        'clear': () => {
+            body.querySelectorAll('.output, .input-line-history').forEach(el => el.remove());
+            return null;
+        },
+
+        'shop': () => {
+            setTimeout(() => window.location.href = '/shop', 1000);
+            return 'Navigating to the shop...';
+        },
+
+        'github': () => {
+            window.open('https://github.com/Warre-python', '_blank');
+            return 'Opening GitHub in a new tab...';
+        },
+
+        'disco': () => {
+            document.body.classList.toggle('disco-mode');
+            return 'Disco mode toggled! 🕺';
+        },
+
+        'hack': () => {
+            let count = 0;
+            const interval = setInterval(() => {
+                const line = document.createElement('div');
+                line.className = 'output';
+                line.style.color = '#0f0';
+                line.innerHTML = `Bypassing firewall... [${Math.random().toString(36).substring(7).toUpperCase()}] ${count}%`;
+                body.insertBefore(line, document.querySelector('.input-line'));
+                body.scrollTop = body.scrollHeight;
+                count += 10;
+                if (count > 100) {
+                    clearInterval(interval);
+                    const final = document.createElement('div');
+                    final.className = 'output';
+                    final.innerHTML = '<strong>ACCESS GRANTED.</strong> (Don\'t worry, it\'s just a script!)';
+                    body.insertBefore(final, document.querySelector('.input-line'));
+                }
+            }, 100);
+            return 'Initializing brute force...';
+        }
+    };
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const fullInput = input.value.trim();
+            const parts = fullInput.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+
+            // Clean up quotes from the arguments
+            const cmd = parts[0] ? parts[0].toLowerCase() : '';
+            const args = parts.slice(1).map(arg => arg.replace(/^"|"$/g, ''));
+            
+            // Add History Line
+            const historyLine = document.createElement('div');
+            historyLine.className = 'input-line-history';
+            const currentDirName = currentPath.length === 0 ? '/' : '/' + currentPath.join('/');
+            historyLine.innerHTML = `<span class="prompt">warrox@be:${currentDirName}$</span> ${fullInput}`;
+            body.insertBefore(historyLine, document.querySelector('.input-line'));
+
+            // Process Response
+            if (COMMANDS[cmd]) {
+                const response = COMMANDS[cmd](args);
+                if (response !== null) {
+                    const outputLine = document.createElement('div');
+                    outputLine.className = 'output';
+                    outputLine.innerHTML = response;
+                    body.insertBefore(outputLine, document.querySelector('.input-line'));
+                }
+            } else if (cmd !== '') {
+                const errorLine = document.createElement('div');
+                errorLine.className = 'output';
+                errorLine.style.color = '#ff5f56';
+                errorLine.innerHTML = `Command not found: ${cmd}. Type 'help' for list.`;
+                body.insertBefore(errorLine, document.querySelector('.input-line'));
+            }
+
+            input.value = '';
+            // Update the live prompt path
+            const newPath = currentPath.length === 0 ? '/' : '/' + currentPath.join('/');
+            promptSpan.innerHTML = `warrox@be:${newPath}$`;
+            body.scrollTop = body.scrollHeight;
+        }
+    });
+</script>
 {% endblock %}
-  
