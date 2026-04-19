@@ -1,0 +1,97 @@
+/* Container voor de hele pagina */
+.product-detail {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Breadcrumb navigatie */
+.breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* Grid Layout voor Foto + Info */
+.product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Twee gelijke kolommen */
+    gap: 3rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Afbeelding styling */
+.product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* Product Informatie kolom */
+.product-info h1 {
+    font-size: 2.5rem;
+    margin-top: 0;
+    color: #333;
+}
+
+.price-tag {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e67e22; /* Een mooie shop-kleur (oranje/bruin) */
+    margin: 1rem 0;
+}
+
+.description {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.description h3 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+/* De Koopknop */
+.btn-buy {
+    background-color: #27ae60; /* Succes groen */
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.btn-buy:hover {
+    background-color: #219150;
+}
+
+/* Responsive design voor Mobiel */
+@media (max-width: 768px) {
+    .product-container {
+        grid-template-columns: 1fr; /* Kolommen onder elkaar op kleine schermen */
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .product-info h1 {
+        font-size: 1.8rem;
+    }
+}

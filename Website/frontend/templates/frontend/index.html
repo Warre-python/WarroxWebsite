@@ -1,22 +1,17 @@
 <!DOCTYPE html>
+{% extends 'frontend/base.html' %}
 {% load static %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Warrox - Home</title>
-        <link rel="stylesheet" href="{% static 'frontend/css/index.css' %}">
-    </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">Warrox.be</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/shop">Shop</a></li>
-                <li><a href="https://github.com/Warre-python">Github</a></li>
-            </ul>
-        </nav>
 
-        <h1>Home</h1>
-    </body>
-</html>        
+{% block title %}
+    Home
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'frontend/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Home</h1>
+{% endblock %}
+  

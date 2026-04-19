@@ -1,31 +1,28 @@
 <!DOCTYPE html>
+{% extends 'frontend/base.html' %}
 {% load static %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Warrox - Shop</title>
-        <link rel="stylesheet" href="{% static 'frontend/css/shop.css' %}">
-    </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">Warrox.be</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/shop">Shop</a></li>
-                <li><a href="https://github.com/Warre-python">Github</a></li>
-            </ul>
-        </nav>
 
-        <h1>Shop</h1>
-        <div class="product-grid">
+{% block title %}
+    Shop
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'frontend/css/shop.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Shop</h1>
+    <div class="product-grid">
             {% for product in products %}
                 <div class="product-card">
                     <h2>{{ product.name }}</h2>
                     <p>€ {{ product.price }}</p>
-                    <a href="https://google.com">Bekijk product</a>
+                    <a href="{% url 'product' product.slug %}">View product</a>
                 </div>
             {% endfor %}
         </div>
-    </body>
-</html>    
+{% endblock %}
+  
+        
+ 
